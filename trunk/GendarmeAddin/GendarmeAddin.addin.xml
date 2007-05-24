@@ -1,0 +1,46 @@
+<Addin id        = "Gendarme"
+       namespace   = "MonoDevelop"
+       name      = "Gendarme support"
+       author    = "Eli Yukelzon a.k.a Reflog"
+       copyright = "GPL"
+       url       = "http://code.google.com/gendarmeaddin"
+       description = "Integrates Gendarme into the MonoDevelop IDE."
+       category    = "IDE extensions"
+       version   = "0.13.0">
+
+        <Runtime>
+                <Import assembly="Mono.Cecil.dll" />
+                <Import assembly="Gendarme.Framework.dll" />
+		<Import assembly="GendarmeAddin.dll" />
+        </Runtime>
+
+        <Dependencies>
+                <Addin id="Core" version="0.13.0"/>
+                <Addin id="Core.Gui" version="0.13.0"/>
+                <Addin id="Projects" version="0.13.0"/>
+                <Addin id="Projects.Gui" version="0.13.0"/>
+                <Addin id="Ide" version="0.13.0"/>
+        </Dependencies>
+
+    
+        <Extension path = "/SharpDevelop/Workbench/Pads" extension-nodes="Pad, SolutionPad" description="Pads shown in the workbench.">
+                        <Pad id = "MonoDevelop.GendarmePad" defaultPlacement = "Bottom" _label = "Gendarme Tests" class = "MonoDevelop.GendarmePad"/>
+        </Extension>
+
+        <Extension path = "/SharpDevelop/Workbench/Contexts/Edit">
+                <ContextPad id = "MonoDevelop.GendarmePad"/>            
+        </Extension>
+        
+          <Extension path = "/SharpDevelop/Dialogs/OptionsDialog">
+                <DialogPanel id    = "GendarmeAddInOptions"
+                        insertafter = "ToolsOptions"
+                        _label = "Gendarme Add-in">
+                        <DialogPanel    id = "General"
+                                _label = "General"
+                                class = "MonoDevelop.GendarmeConfigPanel" />
+                </DialogPanel>
+        </Extension>
+
+
+        
+</Addin>

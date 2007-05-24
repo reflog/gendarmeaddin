@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<UserCombinePreferences filename="/home/reflog/gendarmeaddin/GendarmeAddin.mds">
+  <Files>
+    <File filename="gendarmeaddin Status" />
+  </Files>
+  <Views>
+    <ViewMemento Id="MonoDevelop.Ide.Gui.Pads.ProjectPad">
+      <TreeView>
+        <Node expanded="True">
+          <Node name="GendarmeAddin" expanded="True" selected="True">
+            <Node name="References" expanded="True" />
+          </Node>
+        </Node>
+      </TreeView>
+    </ViewMemento>
+    <ViewMemento Id="MonoDevelop.Ide.Gui.Pads.ClassPad">
+      <TreeView>
+        <Node expanded="True" />
+      </TreeView>
+    </ViewMemento>
+    <ViewMemento Id="MonoDevelop.NUnit.TestPad">
+      <TreeView />
+    </ViewMemento>
+    <ViewMemento Id="MonoQuery.DatabasePad">
+      <TreeView>
+        <Node expanded="False" />
+      </TreeView>
+    </ViewMemento>
+  </Views>
+  <Properties>
+    <Properties>
+      <Property key="ActiveConfiguration" value="Debug" />
+      <Property key="ActiveWindow" value="gendarmeaddin Status" />
+    </Properties>
+  </Properties>
+</UserCombinePreferences>
