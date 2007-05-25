@@ -42,28 +42,49 @@ namespace MonoDevelop {
             TestSingleSolution,
             TestWholeSolution
         }
+        
+  class TestSingleSolutioNodeExtension : NodeBuilderExtension
+        {
+                public override bool CanBuildNode (Type dataType)
+                {
+                        return typeof (DotNetProject).IsAssignableFrom (dataType);
+                }
 
-public class TestSingleSolutionHandler : CommandHandler {
-            protected override void Update(CommandInfo info) {
-                info.Enabled = IdeApp.Workbench.ActiveDocument != null;
-            }
+                public override Type CommandHandlerType {
+                        get { return typeof ( TestSingleSolutionHandler ); }
+                }
+        }
 
-            protected override void Run() {            
+  class TestWholeSolutioNodeExtension : NodeBuilderExtension
+        {
+                public override bool CanBuildNode (Type dataType)
+                {
+                        return typeof (Combine).IsAssignableFrom (dataType);
+                }
+
+                public override Type CommandHandlerType {
+                        get { return typeof ( TestWholeSolutionHandler ); }
+                }
+        }
+
+public class TestSingleSolutionHandler : NodeCommandHandler {
+         [CommandHandler (Commands.TestSingleSolution)]
+                protected void OnTest()
+                {
                 MonoDevelop.GendarmePad pad = (MonoDevelop.GendarmePad) IdeApp.Workbench.Pads[typeof(MonoDevelop.GendarmePad)].Content;
                 IdeApp.Workbench.Pads[typeof(MonoDevelop.GendarmePad)].BringToFront();
-                (pad.Control as MonoDevelop.GendarmeDisplay).RunTests(false);
+                (pad.Control as MonoDevelop.GendarmeDisplay).RunTests(CurrentNode.DataItem);
             }
         }
 
-public class TestWholeSolutionHandler : CommandHandler {
-            protected override void Update(CommandInfo info) {
-                info.Enabled = IdeApp.Workbench.ActiveDocument != null;
-            }
+public class TestWholeSolutionHandler : NodeCommandHandler {
 
-            protected override void Run() {
+         [CommandHandler (Commands.TestWholeSolution)]
+                protected void OnTest()
+                {
                 MonoDevelop.GendarmePad pad = (MonoDevelop.GendarmePad) IdeApp.Workbench.Pads[typeof(MonoDevelop.GendarmePad)].Content;
                 IdeApp.Workbench.Pads[typeof(MonoDevelop.GendarmePad)].BringToFront();
-                (pad.Control as MonoDevelop.GendarmeDisplay) .RunTests(true);
+                (pad.Control as MonoDevelop.GendarmeDisplay) .RunTests(CurrentNode.DataItem);
             }
         }
 
