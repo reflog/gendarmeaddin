@@ -39,11 +39,14 @@ namespace MonoDevelop
 	
 	public partial class GendarmeConfig : Gtk.Bin
 	{
+	    public const string defaultFile = "/usr/lib/gendarme/rules.xml";
+	    public const string defaultSet = "default";
+	    
 		public GendarmeConfig()
 		{
 			this.Build();
-    		edtPath.Text = Runtime.Properties.GetProperty ("GendarmeAddIn.Path", "/usr/lib/gendarme/rules.xml");
-    		edtSet.Text = Runtime.Properties.GetProperty ("GendarmeAddIn.Set", "default");
+    		edtPath.Text = Runtime.Properties.GetProperty ("GendarmeAddIn.Path", defaultFile);
+    		edtSet.Text = Runtime.Properties.GetProperty ("GendarmeAddIn.Set", defaultSet);
 		}
 		
 		public void Store(){

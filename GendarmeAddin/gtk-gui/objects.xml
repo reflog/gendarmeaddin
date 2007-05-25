@@ -1,5 +1,5 @@
 <objects>
-  <object type="GendarmeAddin.GendarmeDisplay" palette-category="widget" allow-children="false" base-type="Gtk.Widget">
+  <object type="MonoDevelop.GendarmeConfig" palette-category="widget" allow-children="false" base-type="Gtk.Widget">
     <itemgroups>
       <itemgroup label="Container Properties">
         <property name="BorderWidth" />
@@ -16,7 +16,7 @@
       </itemgroup>
     </signals>
   </object>
-  <object type="MonoDevelop.GendarmeConfig" palette-category="widget" allow-children="false" base-type="Gtk.Widget">
+  <object type="MonoDevelop.GendarmeDisplay" palette-category="widget" allow-children="false" base-type="Gtk.Widget">
     <itemgroups>
       <itemgroup label="Container Properties">
         <property name="BorderWidth" />
