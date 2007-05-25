@@ -37,10 +37,10 @@ namespace MonoDevelop {
 
 
 public class GendarmePad: IPadContent {
-        GendarmeAddin.GendarmeDisplay widget;
+        GendarmeDisplay widget;
 
         public GendarmePad() {
-            widget = new GendarmeAddin.GendarmeDisplay();
+            widget = new GendarmeDisplay();
             widget.ShowAll();
         }
 

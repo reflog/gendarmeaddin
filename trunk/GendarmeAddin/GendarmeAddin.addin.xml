@@ -41,6 +41,35 @@
                 </DialogPanel>
         </Extension>
 
+   <Extension path = "/SharpDevelop/Commands">
 
-        
+                <Command id = "MonoDevelop.GendarmeAddin.Commands.TestWholeSolution" 
+                        defaultHandler = "MonoDevelop.GendarmeAddin.TestWholeSolutionHandler"
+                        shortcut = "Control|Shift|Z" 
+                        _label = "Run Gendarme Tests on the whole Solution"
+                        description = "Run Gendarme Tests on the whole Solution"/>
+                <Command id = "MonoDevelop.GendarmeAddin.Commands.TestSingleSolution" 
+                        defaultHandler = "MonoDevelop.GendarmeAddin.TestSingleSolutionHandler"
+                        shortcut = "Contorl|Shift|X" 
+                        _label = "Run Gendarme Tests on the selected Solution"
+                        description = "Run Gendarme Tests on the selected Solution"/>
+    </Extension>
+
+    <Extension path = "/SharpDevelop/Views/ProjectBrowser/ContextMenu/ProjectBrowserNode">
+    <!--            <ItemSet id = "GendarmeAddinProject" 
+                _label = "Run Gendarme Tests on the selected Solution1"
+                insertbefore = "Run" />
+                -->
+                 <CommandItem id = "MonoDevelop.GendarmeAddin.Commands.TestSingleSolution"/>
+     </Extension>
+
+    <Extension path = "/SharpDevelop/Views/ProjectBrowser/ContextMenu/CombineBrowserNode">
+    <!--
+                <ItemSet id = "GendarmeAddinSolution" 
+                _label = "Run Gendarme Tests on the whole Solution1"
+                insertbefore = "Run"/>
+                -->
+                 <CommandItem id = "MonoDevelop.GendarmeAddin.Commands.TestWholeSolution"/>
+    </Extension>
+
 </Addin>

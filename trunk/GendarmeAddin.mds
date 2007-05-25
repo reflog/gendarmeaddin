@@ -1,4 +1,4 @@
-<Combine name="GendarmeAddin" fileversion="2.0">
+<Combine releaseversion="0.2" name="GendarmeAddin" fileversion="2.0" description="MonoDevelop adding integrating Gendarme Framework" outputpath="./build/bin/" MakePkgConfig="False" MakeLibPC="True">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="GendarmeAddin" configuration="Debug" />
@@ -13,6 +13,7 @@
     <Execute type="None" entry="GendarmeAddin" />
     <Execute type="None" entry="Packages" />
   </StartMode>
+  <Deployment.LinuxDeployData scriptName="gendarmeaddin" />
   <Entries>
     <Entry filename="./GendarmeAddin/GendarmeAddin.mdp" />
     <Entry filename="./Packages.mdse" />

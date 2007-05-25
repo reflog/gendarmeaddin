@@ -17,7 +17,7 @@ using MonoDevelop.Components.Commands;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Ide.Gui.Pads;
 
-namespace GendarmeAddin
+namespace MonoDevelop
 {
 	public partial class GendarmeDisplay : Gtk.Bin
 	{
@@ -28,8 +28,8 @@ namespace GendarmeAddin
             prepareView();
 		}
 		
-        private string config = "/usr/lib/gendarme/rules.xml";
-        private string set = "default";
+        private string config;
+        private string set;
         Runner runner;
         TreeStore store = new TreeStore(typeof(string), typeof(Violation));
 
@@ -119,14 +119,15 @@ namespace GendarmeAddin
             return result;
         }
 
-        protected virtual void OnBtnRunClicked(object sender, System.EventArgs e) {
+        public void RunTests(bool chk) {
             store.Clear();            
             runner = new MinimalRunner();
-			config = Runtime.Properties.GetProperty ("GendarmeAddIn.Path", "/usr/lib/gendarme/rules.xml");
-    		set = Runtime.Properties.GetProperty ("GendarmeAddIn.Set", "default");
+            
+			config = Runtime.Properties.GetProperty ("GendarmeAddIn.Path", MonoDevelop.GendarmeConfig.defaultFile);
+    		set = Runtime.Properties.GetProperty ("GendarmeAddIn.Set", MonoDevelop.GendarmeConfig.defaultSet);
 
             LoadConfiguration ();        
-            if(chkAll.Active){
+            if(chk){
                 foreach(DotNetProject entry in IdeApp.ProjectOperations.CurrentOpenCombine.GetAllEntries (typeof(DotNetProject))){               
                     AssemblyDefinition ass = AssemblyFactory.GetAssembly(entry.GetOutputFileName ());
                     runner.Process(ass);

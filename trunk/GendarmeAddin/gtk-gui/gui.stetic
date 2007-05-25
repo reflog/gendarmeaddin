@@ -6,7 +6,7 @@
   <import>
     <widget-library name="../bin/Debug/GendarmeAddin.dll" internal="true" />
   </import>
-  <widget class="Gtk.Bin" id="GendarmeAddin.GendarmeDisplay" design-size="503 333">
+  <widget class="Gtk.Bin" id="MonoDevelop.GendarmeDisplay" design-size="503 333">
     <property name="MemberName" />
     <property name="Events">0</property>
     <child>
@@ -15,110 +15,19 @@
         <property name="Events">0</property>
         <property name="Spacing">6</property>
         <child>
-          <widget class="Gtk.VPaned" id="vpaned1">
+          <widget class="Gtk.ScrolledWindow" id="scrolledwindow1">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Events">0</property>
-            <property name="Position">34</property>
+            <property name="VscrollbarPolicy">Automatic</property>
+            <property name="HscrollbarPolicy">Automatic</property>
+            <property name="ShadowType">In</property>
             <child>
-              <widget class="Gtk.HBox" id="hbox1">
-                <property name="MemberName" />
-                <property name="Events">0</property>
-                <property name="Spacing">6</property>
-                <child>
-                  <widget class="Gtk.Label" id="label1">
-                    <property name="MemberName" />
-                    <property name="Events">0</property>
-                    <property name="LabelProp" translatable="yes">Gendarme Runner</property>
-                  </widget>
-                  <packing>
-                    <property name="Position">0</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Alignment" id="alignment1">
-                    <property name="MemberName" />
-                    <property name="Events">0</property>
-                    <child>
-                      <widget class="Gtk.CheckButton" id="chkAll">
-                        <property name="MemberName" />
-                        <property name="CanFocus">True</property>
-                        <property name="Events">0</property>
-                        <property name="Label" translatable="yes">Run on all items in the solution</property>
-                        <property name="Active">True</property>
-                        <property name="DrawIndicator">True</property>
-                        <property name="HasLabel">True</property>
-                        <property name="UseUnderline">True</property>
-                      </widget>
-                    </child>
-                  </widget>
-                  <packing>
-                    <property name="Position">1</property>
-                    <property name="AutoSize">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Button" id="btnRun">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="Events">0</property>
-                    <property name="Type">TextAndIcon</property>
-                    <property name="Icon">stock:gtk-ok Menu</property>
-                    <property name="Label" translatable="yes">Run tests</property>
-                    <property name="UseUnderline">True</property>
-                    <property name="IsDialogButton">False</property>
-                    <signal name="Clicked" handler="OnBtnRunClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">2</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-              </widget>
-              <packing>
-                <property name="Resize">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Expander" id="expander1">
+              <widget class="Gtk.TreeView" id="vView">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Events">0</property>
-                <property name="Expanded">True</property>
-                <child>
-                  <widget class="Gtk.ScrolledWindow" id="scrolledwindow1">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="Events">0</property>
-                    <property name="VscrollbarPolicy">Automatic</property>
-                    <property name="HscrollbarPolicy">Automatic</property>
-                    <property name="ShadowType">In</property>
-                    <child>
-                      <widget class="Gtk.TreeView" id="vView">
-                        <property name="MemberName" />
-                        <property name="CanFocus">True</property>
-                        <property name="Events">0</property>
-                        <signal name="ButtonPressEvent" handler="OnVViewButtonPressEvent" />
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="Gtk.Label" id="GtkLabel2">
-                    <property name="MemberName" />
-                    <property name="Events">0</property>
-                    <property name="LabelProp" translatable="yes">Violations:</property>
-                    <property name="UseUnderline">True</property>
-                  </widget>
-                  <packing>
-                    <property name="type">label_item</property>
-                  </packing>
-                </child>
+                <signal name="ButtonPressEvent" handler="OnVViewButtonPressEvent" />
               </widget>
             </child>
           </widget>
