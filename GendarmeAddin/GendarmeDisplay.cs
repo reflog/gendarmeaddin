@@ -119,7 +119,7 @@ namespace MonoDevelop
             return result;
         }
 
-        public void RunTests(bool chk) {
+        public void RunTests(object item) {
             store.Clear();            
             runner = new MinimalRunner();
             
@@ -127,17 +127,16 @@ namespace MonoDevelop
     		set = Runtime.Properties.GetProperty ("GendarmeAddIn.Set", MonoDevelop.GendarmeConfig.defaultSet);
 
             LoadConfiguration ();        
-            if(chk){
-                foreach(DotNetProject entry in IdeApp.ProjectOperations.CurrentOpenCombine.GetAllEntries (typeof(DotNetProject))){               
+            if(item is Combine){
+                foreach(DotNetProject entry in (item as Combine).GetAllEntries (typeof(DotNetProject))){               
                     AssemblyDefinition ass = AssemblyFactory.GetAssembly(entry.GetOutputFileName ());
                     runner.Process(ass);
                 }
-            }else{
-                if(IdeApp.ProjectOperations.CurrentOpenCombine.StartupEntry is DotNetProject){
-                    AssemblyDefinition ass = AssemblyFactory.GetAssembly(((DotNetProject)IdeApp.ProjectOperations.CurrentOpenCombine.StartupEntry).GetOutputFileName ());
+            }else if(item is DotNetProject){
+                    AssemblyDefinition ass = AssemblyFactory.GetAssembly( (item as DotNetProject).GetOutputFileName ());
                     runner.Process(ass);
-                }
-            }
+                
+            }else return;
             fillViolations();
         }
 
