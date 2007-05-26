@@ -4,14 +4,13 @@
     <File filename="./GendarmeAddin/GendarmeAddin.addin.xml" />
     <File filename="./GendarmeAddin/GendarmeAddin.cs" />
     <File filename="./GendarmeAddin/GendarmeDisplay.cs" />
+    <File filename="./GendarmeAddin/GendarmeConfig.cs" />
   </Files>
   <Views>
     <ViewMemento Id="MonoDevelop.Ide.Gui.Pads.ProjectPad">
       <TreeView>
-        <Node expanded="True">
-          <Node name="GendarmeAddin" expanded="True">
-            <Node name="GendarmeDisplay.cs" expanded="False" selected="True" />
-          </Node>
+        <Node expanded="True" selected="True">
+          <Node name="GendarmeAddin" expanded="True" />
         </Node>
       </TreeView>
     </ViewMemento>

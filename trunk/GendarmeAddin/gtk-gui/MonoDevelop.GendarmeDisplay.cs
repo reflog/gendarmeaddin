@@ -37,17 +37,14 @@ namespace MonoDevelop {
             Stetic.Gui.Initialize();
             // Widget MonoDevelop.GendarmeDisplay
             Stetic.BinContainer.Attach(this);
-            this.Events = ((Gdk.EventMask)(0));
             this.Name = "MonoDevelop.GendarmeDisplay";
             // Container child MonoDevelop.GendarmeDisplay.Gtk.Container+ContainerChild
             this.vbox3 = new Gtk.VBox();
-            this.vbox3.Events = ((Gdk.EventMask)(0));
             this.vbox3.Name = "vbox3";
             this.vbox3.Spacing = 6;
             // Container child vbox3.Gtk.Box+BoxChild
             this.scrolledwindow1 = new Gtk.ScrolledWindow();
             this.scrolledwindow1.CanFocus = true;
-            this.scrolledwindow1.Events = ((Gdk.EventMask)(0));
             this.scrolledwindow1.Name = "scrolledwindow1";
             this.scrolledwindow1.VscrollbarPolicy = ((Gtk.PolicyType)(1));
             this.scrolledwindow1.HscrollbarPolicy = ((Gtk.PolicyType)(1));
@@ -55,25 +52,22 @@ namespace MonoDevelop {
             // Container child scrolledwindow1.Gtk.Container+ContainerChild
             this.vView = new Gtk.TreeView();
             this.vView.CanFocus = true;
-            this.vView.Events = ((Gdk.EventMask)(0));
             this.vView.Name = "vView";
+            this.vView.HeadersVisible = false;
             this.scrolledwindow1.Add(this.vView);
             this.vbox3.Add(this.scrolledwindow1);
             Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox3[this.scrolledwindow1]));
             w2.Position = 0;
             // Container child vbox3.Gtk.Box+BoxChild
             this.statusbar1 = new Gtk.Statusbar();
-            this.statusbar1.Events = ((Gdk.EventMask)(0));
             this.statusbar1.Name = "statusbar1";
             this.statusbar1.Spacing = 6;
             // Container child statusbar1.Gtk.Box+BoxChild
             this.hbox2 = new Gtk.HBox();
-            this.hbox2.Events = ((Gdk.EventMask)(0));
             this.hbox2.Name = "hbox2";
             this.hbox2.Spacing = 6;
             // Container child hbox2.Gtk.Box+BoxChild
             this.label4 = new Gtk.Label();
-            this.label4.Events = ((Gdk.EventMask)(0));
             this.label4.Name = "label4";
             this.label4.LabelProp = Mono.Unix.Catalog.GetString("<b>Violations found:</b>");
             this.label4.UseMarkup = true;
@@ -84,7 +78,6 @@ namespace MonoDevelop {
             w3.Fill = false;
             // Container child hbox2.Gtk.Box+BoxChild
             this.lblVio = new Gtk.Label();
-            this.lblVio.Events = ((Gdk.EventMask)(0));
             this.lblVio.Name = "lblVio";
             this.lblVio.LabelProp = Mono.Unix.Catalog.GetString("0");
             this.hbox2.Add(this.lblVio);
@@ -99,12 +92,10 @@ namespace MonoDevelop {
             w5.Fill = false;
             // Container child statusbar1.Gtk.Box+BoxChild
             this.hbox3 = new Gtk.HBox();
-            this.hbox3.Events = ((Gdk.EventMask)(0));
             this.hbox3.Name = "hbox3";
             this.hbox3.Spacing = 6;
             // Container child hbox3.Gtk.Box+BoxChild
             this.label6 = new Gtk.Label();
-            this.label6.Events = ((Gdk.EventMask)(0));
             this.label6.Name = "label6";
             this.label6.LabelProp = Mono.Unix.Catalog.GetString("<b>Rules checked:</b>");
             this.label6.UseMarkup = true;
@@ -115,7 +106,6 @@ namespace MonoDevelop {
             w6.Fill = false;
             // Container child hbox3.Gtk.Box+BoxChild
             this.lblRules = new Gtk.Label();
-            this.lblRules.Events = ((Gdk.EventMask)(0));
             this.lblRules.Name = "lblRules";
             this.lblRules.LabelProp = Mono.Unix.Catalog.GetString("0");
             this.hbox3.Add(this.lblRules);

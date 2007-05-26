@@ -9,9 +9,8 @@
        version   = "0.13.0">
 
         <Runtime>
-                <Import assembly="Mono.Cecil.dll" />
-                <Import assembly="Gendarme.Framework.dll" />
-		<Import assembly="GendarmeAddin.dll" />
+            <Import assembly="Gendarme.Framework.dll" />
+      		<Import assembly="GendarmeAddin.dll" />
         </Runtime>
 
         <Dependencies>

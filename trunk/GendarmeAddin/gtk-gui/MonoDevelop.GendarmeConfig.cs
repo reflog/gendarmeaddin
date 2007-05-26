@@ -25,22 +25,29 @@ namespace MonoDevelop {
         
         private Gtk.Label label2;
         
+        private Gtk.Label label3;
+        
+        private Gtk.VBox vbox1;
+        
+        private Gtk.RadioButton rbNone;
+        
+        private Gtk.RadioButton rbSolution;
+        
+        private Gtk.RadioButton rbType;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize();
             // Widget MonoDevelop.GendarmeConfig
             Stetic.BinContainer.Attach(this);
-            this.Events = ((Gdk.EventMask)(0));
             this.Name = "MonoDevelop.GendarmeConfig";
             // Container child MonoDevelop.GendarmeConfig.Gtk.Container+ContainerChild
-            this.table1 = new Gtk.Table(((uint)(2)), ((uint)(3)), false);
-            this.table1.Events = ((Gdk.EventMask)(0));
+            this.table1 = new Gtk.Table(((uint)(3)), ((uint)(3)), false);
             this.table1.Name = "table1";
             this.table1.RowSpacing = ((uint)(6));
             this.table1.ColumnSpacing = ((uint)(6));
             // Container child table1.Gtk.Table+TableChild
             this.btnOpen = new Gtk.Button();
             this.btnOpen.CanFocus = true;
-            this.btnOpen.Events = ((Gdk.EventMask)(0));
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.UseStock = true;
             this.btnOpen.UseUnderline = true;
@@ -54,7 +61,6 @@ namespace MonoDevelop {
             // Container child table1.Gtk.Table+TableChild
             this.edtPath = new Gtk.Entry();
             this.edtPath.CanFocus = true;
-            this.edtPath.Events = ((Gdk.EventMask)(0));
             this.edtPath.Name = "edtPath";
             this.edtPath.IsEditable = true;
             this.edtPath.InvisibleChar = '●';
@@ -66,7 +72,6 @@ namespace MonoDevelop {
             // Container child table1.Gtk.Table+TableChild
             this.edtSet = new Gtk.Entry();
             this.edtSet.CanFocus = true;
-            this.edtSet.Events = ((Gdk.EventMask)(0));
             this.edtSet.Name = "edtSet";
             this.edtSet.IsEditable = true;
             this.edtSet.InvisibleChar = '●';
@@ -79,16 +84,16 @@ namespace MonoDevelop {
             w3.YOptions = ((Gtk.AttachOptions)(4));
             // Container child table1.Gtk.Table+TableChild
             this.label1 = new Gtk.Label();
-            this.label1.Events = ((Gdk.EventMask)(0));
             this.label1.Name = "label1";
-            this.label1.LabelProp = Mono.Unix.Catalog.GetString("Rules file:");
+            this.label1.LabelProp = Mono.Unix.Catalog.GetString("Result grouping:");
             this.table1.Add(this.label1);
             Gtk.Table.TableChild w4 = ((Gtk.Table.TableChild)(this.table1[this.label1]));
+            w4.TopAttach = ((uint)(2));
+            w4.BottomAttach = ((uint)(3));
             w4.XOptions = ((Gtk.AttachOptions)(4));
             w4.YOptions = ((Gtk.AttachOptions)(4));
             // Container child table1.Gtk.Table+TableChild
             this.label2 = new Gtk.Label();
-            this.label2.Events = ((Gdk.EventMask)(0));
             this.label2.Name = "label2";
             this.label2.LabelProp = Mono.Unix.Catalog.GetString("Rule set:");
             this.table1.Add(this.label2);
@@ -97,6 +102,62 @@ namespace MonoDevelop {
             w5.BottomAttach = ((uint)(2));
             w5.XOptions = ((Gtk.AttachOptions)(4));
             w5.YOptions = ((Gtk.AttachOptions)(4));
+            // Container child table1.Gtk.Table+TableChild
+            this.label3 = new Gtk.Label();
+            this.label3.Name = "label3";
+            this.label3.LabelProp = Mono.Unix.Catalog.GetString("Rules file:");
+            this.table1.Add(this.label3);
+            Gtk.Table.TableChild w6 = ((Gtk.Table.TableChild)(this.table1[this.label3]));
+            w6.XOptions = ((Gtk.AttachOptions)(4));
+            w6.YOptions = ((Gtk.AttachOptions)(4));
+            // Container child table1.Gtk.Table+TableChild
+            this.vbox1 = new Gtk.VBox();
+            this.vbox1.Name = "vbox1";
+            this.vbox1.Spacing = 6;
+            // Container child vbox1.Gtk.Box+BoxChild
+            this.rbNone = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("No Grouping"));
+            this.rbNone.CanFocus = true;
+            this.rbNone.Name = "rbNone";
+            this.rbNone.Active = true;
+            this.rbNone.DrawIndicator = true;
+            this.rbNone.UseUnderline = true;
+            this.rbNone.Group = new GLib.SList(System.IntPtr.Zero);
+            this.vbox1.Add(this.rbNone);
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox1[this.rbNone]));
+            w7.Position = 0;
+            w7.Expand = false;
+            w7.Fill = false;
+            // Container child vbox1.Gtk.Box+BoxChild
+            this.rbSolution = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("Group by solution"));
+            this.rbSolution.CanFocus = true;
+            this.rbSolution.Name = "rbSolution";
+            this.rbSolution.DrawIndicator = true;
+            this.rbSolution.UseUnderline = true;
+            this.rbSolution.Group = this.rbNone.Group;
+            this.vbox1.Add(this.rbSolution);
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.vbox1[this.rbSolution]));
+            w8.Position = 1;
+            w8.Expand = false;
+            w8.Fill = false;
+            // Container child vbox1.Gtk.Box+BoxChild
+            this.rbType = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("Group by problem type"));
+            this.rbType.CanFocus = true;
+            this.rbType.Name = "rbType";
+            this.rbType.DrawIndicator = true;
+            this.rbType.UseUnderline = true;
+            this.rbType.Group = this.rbNone.Group;
+            this.vbox1.Add(this.rbType);
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.rbType]));
+            w9.Position = 2;
+            w9.Expand = false;
+            w9.Fill = false;
+            this.table1.Add(this.vbox1);
+            Gtk.Table.TableChild w10 = ((Gtk.Table.TableChild)(this.table1[this.vbox1]));
+            w10.TopAttach = ((uint)(2));
+            w10.BottomAttach = ((uint)(3));
+            w10.LeftAttach = ((uint)(1));
+            w10.RightAttach = ((uint)(2));
+            w10.YOptions = ((Gtk.AttachOptions)(4));
             this.Add(this.table1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

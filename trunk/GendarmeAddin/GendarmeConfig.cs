@@ -35,7 +35,11 @@ using Gtk;
 
 namespace MonoDevelop
 {
-	
+	public enum GendarmeGroupingType {
+	    None,
+	    Solution,
+	    Reason
+	}
 	
 	public partial class GendarmeConfig : Gtk.Bin
 	{
@@ -47,11 +51,21 @@ namespace MonoDevelop
 			this.Build();
     		edtPath.Text = Runtime.Properties.GetProperty ("GendarmeAddIn.Path", defaultFile);
     		edtSet.Text = Runtime.Properties.GetProperty ("GendarmeAddIn.Set", defaultSet);
+    		GendarmeGroupingType mode = (GendarmeGroupingType)Runtime.Properties.GetProperty ("GendarmeAddIn.GroupMode", (int)GendarmeGroupingType.None);
+    		rbNone.Active = mode == GendarmeGroupingType.None;
+    		rbSolution.Active = mode == GendarmeGroupingType.Solution;
+    		rbType.Active = mode == GendarmeGroupingType.Reason;
 		}
 		
 		public void Store(){
     		Runtime.Properties.SetProperty ("GendarmeAddIn.Path", edtPath.Text);
     		Runtime.Properties.SetProperty ("GendarmeAddIn.Set", edtSet.Text);
+    		GendarmeGroupingType mode = GendarmeGroupingType.None;
+    		if(rbSolution.Active) 
+    		    mode = GendarmeGroupingType.Solution;
+    		else if(rbType.Active) 
+    		    mode = GendarmeGroupingType.Reason;
+    		Runtime.Properties.SetProperty ("GendarmeAddIn.GroupMode", (int)mode);
     		Runtime.Properties.SaveProperties ();
 		}
 		
