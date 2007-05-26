@@ -1,4 +1,4 @@
-<Combine releaseversion="0.2" name="GendarmeAddin" fileversion="2.0" description="MonoDevelop adding integrating Gendarme Framework" outputpath="./build/bin/" MakePkgConfig="False" MakeLibPC="True">
+<Combine releaseversion="0.3" name="GendarmeAddin" fileversion="2.0" description="MonoDevelop adding integrating Gendarme Framework" outputpath="./build/bin/" MakePkgConfig="False" MakeLibPC="True">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="GendarmeAddin" configuration="Debug" />
