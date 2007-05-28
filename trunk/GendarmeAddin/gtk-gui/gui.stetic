@@ -6,7 +6,7 @@
   <import>
     <widget-library name="../bin/Debug/GendarmeAddin.dll" internal="true" />
   </import>
-  <widget class="Gtk.Bin" id="MonoDevelop.GendarmeDisplay" design-size="503 333">
+  <widget class="Gtk.Bin" id="MonoDevelop.GendarmeDisplay" design-size="674 335">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox3">
@@ -36,16 +36,51 @@
         <child>
           <widget class="Gtk.Statusbar" id="statusbar1">
             <property name="MemberName" />
-            <property name="Spacing">6</property>
+            <property name="Spacing">17</property>
+            <property name="BorderWidth">1</property>
+            <child>
+              <widget class="Gtk.Label" id="label1">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Progress&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ProgressBar" id="progressbar">
+                <property name="MemberName" />
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="label4">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Violations found:&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="Position">3</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
             <child>
               <widget class="Gtk.HBox" id="hbox2">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Label" id="label4">
+                  <widget class="Gtk.Label" id="lblVio">
                     <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes">&lt;b&gt;Violations found:&lt;/b&gt;</property>
-                    <property name="UseMarkup">True</property>
+                    <property name="LabelProp" translatable="yes">0</property>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -55,9 +90,10 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="lblVio">
+                  <widget class="Gtk.Label" id="label6">
                     <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes">0</property>
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Rules checked:&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -68,7 +104,7 @@
                 </child>
               </widget>
               <packing>
-                <property name="Position">1</property>
+                <property name="Position">4</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
@@ -79,10 +115,9 @@
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Label" id="label6">
+                  <widget class="Gtk.Label" id="lblRules">
                     <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes">&lt;b&gt;Rules checked:&lt;/b&gt;</property>
-                    <property name="UseMarkup">True</property>
+                    <property name="LabelProp" translatable="yes">0</property>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -92,23 +127,12 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="lblRules">
-                    <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes">0</property>
-                  </widget>
-                  <packing>
-                    <property name="Position">1</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
+                  <placeholder />
                 </child>
               </widget>
               <packing>
-                <property name="Position">2</property>
+                <property name="Position">5</property>
                 <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
               </packing>
             </child>
           </widget>

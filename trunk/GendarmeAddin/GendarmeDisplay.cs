@@ -17,21 +17,57 @@ using MonoDevelop.Core.Gui;
 using MonoDevelop.Components.Commands;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Ide.Gui.Pads;
+using System.Threading;
 
 namespace MonoDevelop {
 public partial class GendarmeDisplay : Gtk.Bin {
 
+        private string config;
+        private string set;
+        GendarmeRunner runner;
+        TreeStore store = new TreeStore(typeof(string), typeof(Violation));
+        double progress_step = 0;
+        double current_progress = 0;
+        double previous_progress = 0;
+
         public GendarmeDisplay() {
             this.Build();
             prepareView();
+
         }
 
-        private string config;
-        private string set;
-        Runner runner;
-        TreeStore store = new TreeStore(typeof(string), typeof(Violation));
+        public void ClearView(){
+            store.Clear();
+            lblVio.Text = "0";
+            lblRules.Text = "0";
+            progressbar.Fraction = 0;
+        }
 
+        void addSolution(RuleInformation ri, Violation v, TreeIter i){
+                string s = Mono.Unix.Catalog.GetString("Solution");
+                TreeIter i3 = store.AppendValues(i, new object [] {s, v});
+                s = String.Format (ri.Solution, v.Violator)+ Environment.NewLine;
+                string url = ri.Uri;
+                if (url.Length > 0) {
+                    url = String.Format("<u>{0}</u>",url);
+                    s += "<b>"+Mono.Unix.Catalog.GetString("More info available at:")+"</b> " + Environment.NewLine + url;
+                }
+                store.AppendValues(i3, new object [] {s, v});
+        
+        }
 
+        void addDetails(Violation v, TreeIter i){
+                if(v.Messages != null && v.Messages.Count > 0) {
+                    string s = Mono.Unix.Catalog.GetString("Details");
+                    TreeIter i3 = store.AppendValues(i, new object [] {s, v});
+                    s = String.Empty;
+                    foreach (Message message in v.Messages) {
+                        s += message + Environment.NewLine;
+                    }
+                    store.AppendValues(i3, new object [] {s, v});
+                }
+        }
+        
         void fillViolationsWithoutGrouping() {
             foreach(Violation v in runner.Violations) {
                 RuleInformation ri = RuleInformationManager.GetRuleInformation (v.Rule);
@@ -40,25 +76,8 @@ public partial class GendarmeDisplay : Gtk.Bin {
                 TreeIter i2 = store.AppendValues(i, new object [] {s, v});
                 s = String.Format (ri.Problem, v.Violator);
                 store.AppendValues(i2, new object [] {s, v});
-                TreeIter i3;
-                if(v.Messages != null && v.Messages.Count > 0) {
-                    s = Mono.Unix.Catalog.GetString("Details");
-                    i3 = store.AppendValues(i2, new object [] {s, v});
-                    s = String.Empty;
-                    foreach (Message message in v.Messages) {
-                        s += message + Environment.NewLine;
-                    }
-                    store.AppendValues(i3, new object [] {s, v});
-                }
-                s = Mono.Unix.Catalog.GetString("Solution");
-                i3 = store.AppendValues(i, new object [] {s, v});
-                s = String.Format (ri.Solution, v.Violator)+ Environment.NewLine;
-                string url = ri.Uri;
-                if (url.Length > 0) {
-                    url = String.Format("<u>{0}</u>",url);
-                    s += "<b>"+Mono.Unix.Catalog.GetString("More info available at:")+"</b> " + Environment.NewLine + url;
-                }
-                store.AppendValues(i3, new object [] {s, v});
+                addDetails(v, i2);
+                addSolution(ri, v, i); 
             }
         }
 
@@ -76,25 +95,8 @@ public partial class GendarmeDisplay : Gtk.Bin {
                 foreach(Violation v in vList[ri]) {
                     string s = String.Format (ri.Problem, v.Violator);
                     TreeIter i2 = store.AppendValues(i, new object [] {s, v});
-                    TreeIter i3;
-                    if(v.Messages != null && v.Messages.Count > 0) {
-                        s = Mono.Unix.Catalog.GetString("Details");
-                        i3 = store.AppendValues(i2, new object [] {s, v});
-                        s = String.Empty;
-                        foreach (Message message in v.Messages) {
-                            s += message + Environment.NewLine;
-                        }
-                        store.AppendValues(i3, new object [] {s, v});
-                    }
-                    s = Mono.Unix.Catalog.GetString("Solution");
-                    i3 = store.AppendValues(i2, new object [] {s, v});
-                    s = String.Format (ri.Solution, v.Violator)+ Environment.NewLine;
-                    string url = ri.Uri;
-                    if (url.Length > 0) {
-                        url = String.Format("<u>{0}</u>",url);
-                        s += "<b>"+Mono.Unix.Catalog.GetString("More info available at:")+"</b> " + Environment.NewLine + url;
-                    }
-                    store.AppendValues(i3, new object [] {s, v});
+                    addDetails(v, i2);
+                    addSolution(ri, v, i2); 
                 }
             }
         }
@@ -102,11 +104,11 @@ public partial class GendarmeDisplay : Gtk.Bin {
         void fillViolationsWithSolutionGrouping() {
             Dictionary<DotNetProject, List<Violation>> vList = new Dictionary<DotNetProject, List<Violation>>();
             foreach(Violation v in runner.Violations) {
-                RuleInformation ri = RuleInformationManager.GetRuleInformation (v.Rule);
                 DotNetProject prj = null;
                 findItem(getSource(v.Messages), out prj);
                 if (prj == null) {
-                    showError("Cannot display results. One of the items cannot be associated with a project");
+                    MonoDevelop.Core.Gui.Services.MessageService.ShowErrorFormatted("Cannot display results. Couldn't resolve the location of {3} {0} by it's source {3} {1} for violation {3} {2}",
+                        v.Violator.ToString(),getSource(v.Messages),getMessageLine(v.Messages),Environment.NewLine);
                     return;
                 }
                 if(!vList.ContainsKey(prj)) {
@@ -124,25 +126,8 @@ public partial class GendarmeDisplay : Gtk.Bin {
                     TreeIter i2 = store.AppendValues(i, new object [] {s, v});
                     s = String.Format (ri.Problem, v.Violator);
                     store.AppendValues(i2, new object [] {s, v});
-                    TreeIter i3;
-                    if(v.Messages != null && v.Messages.Count > 0) {
-                        s = Mono.Unix.Catalog.GetString("Details");
-                        i3 = store.AppendValues(i2, new object [] {s, v});
-                        s = String.Empty;
-                        foreach (Message message in v.Messages) {
-                            s += message + Environment.NewLine;
-                        }
-                        store.AppendValues(i3, new object [] {s, v});
-                    }
-                    s = Mono.Unix.Catalog.GetString("Solution");
-                    i3 = store.AppendValues(i, new object [] {s, v});
-                    s = String.Format (ri.Solution, v.Violator)+ Environment.NewLine;
-                    string url = ri.Uri;
-                    if (url.Length > 0) {
-                        url = String.Format("<u>{0}</u>",url);
-                        s += "<b>"+Mono.Unix.Catalog.GetString("More info available at:")+"</b> " + Environment.NewLine + url;
-                    }
-                    store.AppendValues(i3, new object [] {s, v});
+                    addDetails(v, i2);
+                    addSolution(ri, v, i); 
                 }
             }
         }
@@ -198,7 +183,7 @@ public partial class GendarmeDisplay : Gtk.Bin {
                     }
                 }
             } catch (Exception e) {
-                showError("Error reading rules" + Environment.NewLine + "Details: " + e);
+                MonoDevelop.Core.Gui.Services.MessageService.ShowErrorFormatted("Error reading rules" + Environment.NewLine + "Details: " + e);
                 return false;
             }
 
@@ -217,34 +202,75 @@ public partial class GendarmeDisplay : Gtk.Bin {
                 fillViolationsWithReasonGrouping();
                 break;
             }
-            updateCounters();
         }
-
+        
+        
         public void RunTests(object item) {
             store.Clear();
-            runner = new MinimalRunner();
-
+            progressbar.Fraction = 0;            
+            Thread thread = new Thread(OnDoWork);
+            thread.IsBackground = true;
+            thread.Start(item);            
+        }
+        
+        private void SetProgress(double number)
+       { 
+           MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new StatefulMessageHandler (delegate {
+                 progressbar.Fraction = number;
+                 updateCounters();
+              }
+           ), null);
+       }
+        public void OnProgressChanged(int progress){
+            double addp = (double)progress / progress_step;
+            double savep = previous_progress; 
+            previous_progress = addp;
+            current_progress +=  addp - savep;
+            SetProgress(current_progress);
+        }        
+       
+        void OnDoWork (object item){
+            runner = new GendarmeRunner();
+            runner.ProgressChanged += new GendarmeRunner.ProgressChangedHandler(OnProgressChanged);
             config = Runtime.Properties.GetProperty ("GendarmeAddIn.Path", MonoDevelop.GendarmeConfig.defaultFile);
             set = Runtime.Properties.GetProperty ("GendarmeAddIn.Set", MonoDevelop.GendarmeConfig.defaultSet);
-
             LoadConfiguration ();
+            current_progress = 0;
             if(item is Combine) {
+                if((item as Combine).GetAllEntries (typeof(DotNetProject)).Count>0)
+                    progress_step = (double) ((item as Combine).GetAllEntries (typeof(DotNetProject)).Count)*100;
+                else
+                    SetProgress(1);
                 foreach(DotNetProject entry in (item as Combine).GetAllEntries (typeof(DotNetProject))) {
+                    previous_progress = 0;
                     if(System.IO.File.Exists(entry.GetOutputFileName ())) {
                         AssemblyDefinition ass = AssemblyFactory.GetAssembly(entry.GetOutputFileName ());
-                        runner.Process(ass);
+                        runner.ProcessWithProgress(ass);
                     }
                 }
             } else if(item is DotNetProject) {
+                progress_step = 100;
                 if(System.IO.File.Exists((item as DotNetProject).GetOutputFileName ())) {
                     AssemblyDefinition ass = AssemblyFactory.GetAssembly( (item as DotNetProject).GetOutputFileName ());
-                    runner.Process(ass);
+                    runner.ProcessWithProgress(ass);
                 }
 
-            } else return;
-            fillViolations((MonoDevelop.GendarmeGroupingType)Runtime.Properties.GetProperty ("GendarmeAddIn.GroupMode", (int)GendarmeGroupingType.None));
+            } else {
+                return;
+                }
+           MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new StatefulMessageHandler (delegate {
+                fillViolations((MonoDevelop.GendarmeGroupingType)Runtime.Properties.GetProperty ("GendarmeAddIn.GroupMode", (int)GendarmeGroupingType.None));
+              }
+           ), null);
         }
-
+        string getMessageLine(MessageCollection ms) {
+            if (ms != null && ms.Count > 0) {
+                foreach(Message m in ms) {
+                    return m.Text;
+                }
+            }
+            return String.Empty;
+        }
         string getSource(MessageCollection ms) {
             if (ms != null && ms.Count > 0) {
                 foreach(Message m in ms) {
@@ -254,6 +280,36 @@ public partial class GendarmeDisplay : Gtk.Bin {
             return String.Empty;
         }
 
+        ILanguageItem findItemMethod(IClass cls, string type, string method){
+         foreach(IClass clspart in cls.Parts) {         
+             if (clspart.FullyQualifiedName == type) {
+                 if (method != String.Empty) {
+                     foreach (IMethod met in cls.Methods) {
+                         if ((met.Name == method) ||
+                                 (met.IsConstructor  && method == ".ctor")
+                            ) {
+                             return met;
+                         }
+                     }
+                     
+                     if(method.Length>4 && (method.StartsWith("set_") ||method.StartsWith("get_"))){
+                         foreach(IProperty prop in cls.Properties){
+                             if (prop.CanGet && (("get_"+prop.Name) == method) ||
+                                 prop.CanSet && (("set_"+prop.Name) == method) )
+                                     return prop;
+                         }
+                     }
+                 }
+                 return clspart;
+            }
+            foreach(IClass subclass in cls.InnerClasses){
+                    ILanguageItem metret = findItemMethod(subclass, type, method);
+                    if (metret != null) return metret;            
+            }
+         }    
+         return null;
+        }
+        
         ILanguageItem findItem(string path, out DotNetProject targetProject) {
             string type = String.Empty;
             string method = String.Empty;
@@ -264,31 +320,24 @@ public partial class GendarmeDisplay : Gtk.Bin {
             } else {
                 type = path.Substring(0,path.IndexOf(":"));
             }
+            type = type.Replace("/",".");
+            int anonpos = type.IndexOf("<>c__CompilerGenerated");
+            if (anonpos != -1){
+                type = type.Substring(0, anonpos-1);
+                method = String.Empty;
+            }
             foreach(DotNetProject entry in IdeApp.ProjectOperations.CurrentOpenCombine.GetAllEntries (typeof(DotNetProject))) {
+                targetProject = entry;
                 foreach(ProjectFile project in entry.ProjectFiles) {
                     IParserContext ctx = IdeApp.ProjectOperations.ParserDatabase.GetProjectParserContext (project.Project);
                     foreach (IClass cls in ctx.GetProjectContents ()) {
-                        foreach(IClass clspart in cls.Parts) {
-                            if (clspart.FullyQualifiedName == type) {
-                                if (method != String.Empty) {
-                                    foreach (IMethod met in cls.Methods) {
+                            ILanguageItem metret = findItemMethod(cls, type, method);
+                            if (metret != null) 
+                                return metret;
+                     }
+                 }
+             }
 
-                                        if ((met.Name == method) ||
-                                                (met.IsConstructor  && method == ".ctor")
-                                           ) {
-                                            targetProject = entry;
-                                            return met;
-                                        }
-                                    }
-                                } else {
-                                    targetProject = entry;
-                                    return clspart;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             targetProject = null;
             return null;
         }
@@ -299,15 +348,9 @@ public partial class GendarmeDisplay : Gtk.Bin {
             if (item != null)
                 IdeApp.ProjectOperations.JumpToDeclaration (item);
             else
-                showError("The source for this violation was not found");
+                MonoDevelop.Core.Gui.Services.MessageService.ShowErrorFormatted("The source for this violation was not found");
         }
 
-        void showError(string message) {
-            MessageDialog dlg = new MessageDialog(null, DialogFlags.Modal, Gtk.MessageType.Error,
-                                                  ButtonsType.Ok, false, Mono.Unix.Catalog.GetString(message));
-            dlg.Run();
-            dlg.Hide();
-        }
 
         [GLib.ConnectBefore]
         protected virtual void OnVViewButtonPressEvent(object o, Gtk.ButtonPressEventArgs args) {
@@ -334,6 +377,7 @@ public partial class GendarmeDisplay : Gtk.Bin {
                                 m.Append(mi);
                                 m.ShowAll();
                                 m.Popup();
+                                
                             }
                         }
                     }
@@ -341,6 +385,6 @@ public partial class GendarmeDisplay : Gtk.Bin {
             }
         }
 
-
+                                
     }
 }
