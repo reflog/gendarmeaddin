@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<UserCombinePreferences filename="/home/reflog/gendarmeaddin/GendarmeAddin.mds">
+  <Files>
+    <File filename="./GendarmeAddin/GendarmeAddin.addin.xml" />
+    <File filename="./GendarmeAddin/GendarmeConfig.cs" />
+    <File filename="./GendarmeAddin/GendarmeRunner.cs" />
+    <File filename="./GendarmeAddin/GendarmePad.cs" />
+    <File filename="./GendarmeAddin/GendarmeDisplay.cs" />
+    <File filename="./GendarmeAddin/GendarmeAddin.cs" />
+  </Files>
+  <Views>
+    <ViewMemento Id="MonoDevelop.Ide.Gui.Pads.ProjectPad">
+      <TreeView>
+        <Node expanded="True" selected="True">
+          <Node name="GendarmeAddin" expanded="True" />
+        </Node>
+      </TreeView>
+    </ViewMemento>
+    <ViewMemento Id="MonoDevelop.Ide.Gui.Pads.ClassPad">
+      <TreeView>
+        <Node expanded="True" />
+      </TreeView>
+    </ViewMemento>
+    <ViewMemento Id="MonoDevelop.NUnit.TestPad">
+      <TreeView />
+    </ViewMemento>
+    <ViewMemento Id="MonoQuery.DatabasePad">
+      <TreeView>
+        <Node expanded="False" />
+      </TreeView>
+    </ViewMemento>
+  </Views>
+  <Properties>
+    <Properties>
+      <Property key="ActiveConfiguration" value="Debug" />
+      <Property key="ActiveWindow" value="/home/reflog/gendarmeaddin/GendarmeAddin/GendarmeDisplay.cs" />
+    </Properties>
+  </Properties>
+</UserCombinePreferences>
