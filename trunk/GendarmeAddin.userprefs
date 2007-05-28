@@ -2,7 +2,6 @@
 <UserCombinePreferences filename="/home/reflog/gendarmeaddin/GendarmeAddin.mds">
   <Files>
     <File filename="./GendarmeAddin/GendarmeAddin.addin.xml" />
-    <File filename="./GendarmeAddin/GendarmeConfig.cs" />
     <File filename="./GendarmeAddin/GendarmeRunner.cs" />
     <File filename="./GendarmeAddin/GendarmePad.cs" />
     <File filename="./GendarmeAddin/GendarmeDisplay.cs" />

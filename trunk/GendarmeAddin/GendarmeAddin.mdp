@@ -50,5 +50,5 @@
       <Widget>MonoDevelop.GendarmeDisplay</Widget>
     </ExportedWidgets>
   </GtkDesignInfo>
-  <Deployment.LinuxDeployData scriptName="gendarmeaddin" />
+  <Deployment.LinuxDeployData scriptName="gendarmeaddin" generatePcFile="False" />
 </Project>

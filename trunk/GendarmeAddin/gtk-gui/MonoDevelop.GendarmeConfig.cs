@@ -33,6 +33,8 @@ namespace MonoDevelop {
         
         private Gtk.RadioButton rbSolution;
         
+        private Gtk.RadioButton rbSolutionProb;
+        
         private Gtk.RadioButton rbType;
         
         protected virtual void Build() {
@@ -140,6 +142,18 @@ namespace MonoDevelop {
             w8.Expand = false;
             w8.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
+            this.rbSolutionProb = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("Group by solution and problem type"));
+            this.rbSolutionProb.CanFocus = true;
+            this.rbSolutionProb.Name = "rbSolutionProb";
+            this.rbSolutionProb.DrawIndicator = true;
+            this.rbSolutionProb.UseUnderline = true;
+            this.rbSolutionProb.Group = this.rbNone.Group;
+            this.vbox1.Add(this.rbSolutionProb);
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.rbSolutionProb]));
+            w9.Position = 2;
+            w9.Expand = false;
+            w9.Fill = false;
+            // Container child vbox1.Gtk.Box+BoxChild
             this.rbType = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("Group by problem type"));
             this.rbType.CanFocus = true;
             this.rbType.Name = "rbType";
@@ -147,17 +161,17 @@ namespace MonoDevelop {
             this.rbType.UseUnderline = true;
             this.rbType.Group = this.rbNone.Group;
             this.vbox1.Add(this.rbType);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.rbType]));
-            w9.Position = 2;
-            w9.Expand = false;
-            w9.Fill = false;
+            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.vbox1[this.rbType]));
+            w10.Position = 3;
+            w10.Expand = false;
+            w10.Fill = false;
             this.table1.Add(this.vbox1);
-            Gtk.Table.TableChild w10 = ((Gtk.Table.TableChild)(this.table1[this.vbox1]));
-            w10.TopAttach = ((uint)(2));
-            w10.BottomAttach = ((uint)(3));
-            w10.LeftAttach = ((uint)(1));
-            w10.RightAttach = ((uint)(2));
-            w10.YOptions = ((Gtk.AttachOptions)(4));
+            Gtk.Table.TableChild w11 = ((Gtk.Table.TableChild)(this.table1[this.vbox1]));
+            w11.TopAttach = ((uint)(2));
+            w11.BottomAttach = ((uint)(3));
+            w11.LeftAttach = ((uint)(1));
+            w11.RightAttach = ((uint)(2));
+            w11.YOptions = ((Gtk.AttachOptions)(4));
             this.Add(this.table1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
