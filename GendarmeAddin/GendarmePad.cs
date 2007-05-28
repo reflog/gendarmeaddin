@@ -41,9 +41,17 @@ public class GendarmePad: IPadContent {
 
         public GendarmePad() {
             widget = new GendarmeDisplay();
+            IdeApp.ProjectOperations.CombineOpened += (CombineEventHandler) MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new CombineEventHandler (OnCombineUpdate));
+            IdeApp.ProjectOperations.CombineClosed += (CombineEventHandler) MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new CombineEventHandler (OnCombineUpdate));
             widget.ShowAll();
         }
-
+        
+        protected virtual void OnCombineUpdate (object sender, CombineEventArgs e)                                                                     
+                {                                                                                                                                            
+                        widget.ClearView();                                                                                    
+                }                                                                                                                                            
+                                                                                                                                                             
+                
         void IPadContent.Initialize (IPadWindow window) {
             window.Title = GettextCatalog.GetString ("Gendarme Test results");
             window.Icon = "md-combine-icon";
@@ -56,8 +64,10 @@ public class GendarmePad: IPadContent {
                 return widget;
             }
         }
-
+    
         public void RedrawContent () {}
+
+       
 
 
     }
