@@ -146,7 +146,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="MonoDevelop.GendarmeConfig" design-size="663 153">
+  <widget class="Gtk.Bin" id="MonoDevelop.GendarmeConfig" design-size="663 181">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.Table" id="table1">
@@ -323,6 +323,23 @@
               </packing>
             </child>
             <child>
+              <widget class="Gtk.RadioButton" id="rbSolutionProb">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Label" translatable="yes">Group by solution and problem type</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="UseUnderline">True</property>
+                <property name="Group">group1</property>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
               <widget class="Gtk.RadioButton" id="rbType">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
@@ -333,7 +350,7 @@
                 <property name="Group">group1</property>
               </widget>
               <packing>
-                <property name="Position">2</property>
+                <property name="Position">3</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>

@@ -38,7 +38,8 @@ namespace MonoDevelop
 	public enum GendarmeGroupingType {
 	    None,
 	    Solution,
-	    Reason
+	    Reason,
+	    SolutionAndReason
 	}
 	
 	public partial class GendarmeConfig : Gtk.Bin
@@ -54,6 +55,7 @@ namespace MonoDevelop
     		GendarmeGroupingType mode = (GendarmeGroupingType)Runtime.Properties.GetProperty ("GendarmeAddIn.GroupMode", (int)GendarmeGroupingType.None);
     		rbNone.Active = mode == GendarmeGroupingType.None;
     		rbSolution.Active = mode == GendarmeGroupingType.Solution;
+    		rbSolutionProb.Active = mode == GendarmeGroupingType.SolutionAndReason;
     		rbType.Active = mode == GendarmeGroupingType.Reason;
 		}
 		
@@ -65,6 +67,9 @@ namespace MonoDevelop
     		    mode = GendarmeGroupingType.Solution;
     		else if(rbType.Active) 
     		    mode = GendarmeGroupingType.Reason;
+    		else if(rbSolutionProb.Active) 
+    		    mode = GendarmeGroupingType.SolutionAndReason;
+    		    
     		Runtime.Properties.SetProperty ("GendarmeAddIn.GroupMode", (int)mode);
     		Runtime.Properties.SaveProperties ();
 		}
@@ -74,13 +79,11 @@ namespace MonoDevelop
         
 		protected virtual void OnBtnOpenClicked(object sender, System.EventArgs e)
 		{		
-		d.Filter = new FileFilter();
-		d.Filter.AddMimeType("text/xml");
-		if (d.Run() == (int)ResponseType.Ok)
-			{
-			  edtPath.Text = d.Filename;
-			}
-    		d.Hide();		  
+    		d.Filter = new FileFilter();
+    		d.Filter.AddMimeType("text/xml");
+    		if (d.Run() == (int)ResponseType.Ok)
+    			  edtPath.Text = d.Filename;
+       		d.Hide();		  
 		}
 
 		
