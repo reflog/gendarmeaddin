@@ -18,7 +18,9 @@
       </TreeView>
     </ViewMemento>
     <ViewMemento Id="MonoDevelop.NUnit.TestPad">
-      <TreeView />
+      <TreeView>
+        <Node expanded="False" />
+      </TreeView>
     </ViewMemento>
     <ViewMemento Id="MonoQuery.DatabasePad">
       <TreeView>

@@ -54,7 +54,6 @@ public partial class GendarmeDisplay : Gtk.Bin {
         public GendarmeDisplay() {
             this.Build();
             prepareView();
-string s="";
         }
 
         public void ClearView(){
