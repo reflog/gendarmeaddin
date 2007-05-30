@@ -46,7 +46,7 @@ public partial class GendarmeDisplay : Gtk.Bin {
         private string config;
         private string set;
         GendarmeRunner runner;
-        TreeStore store = new TreeStore(typeof(string), typeof(Violation));
+        TreeStore store = new TreeStore(typeof(string), typeof(Violation),typeof(GendarmeAddin.INodeAppendable));
         double progress_step = 0;
         double current_progress = 0;
         double previous_progress = 0;
@@ -54,7 +54,7 @@ public partial class GendarmeDisplay : Gtk.Bin {
         public GendarmeDisplay() {
             this.Build();
             prepareView();
-
+string s="";
         }
 
         public void ClearView(){
@@ -64,49 +64,30 @@ public partial class GendarmeDisplay : Gtk.Bin {
             progressbar.Fraction = 0;
         }
 
-        void addSolution(RuleInformation ri, Violation v, TreeIter i){
-                string s = Mono.Unix.Catalog.GetString("Solution");
-                TreeIter i3 = store.AppendValues(i, new object [] {s, v});
-                s = String.Format (ri.Solution, v.Violator)+ Environment.NewLine;
-                string url = ri.Uri;
-                if (url.Length > 0) {
-                    url = String.Format("<u>{0}</u>",url);
-                    s += "<b>"+Mono.Unix.Catalog.GetString("More info available at:")+"</b> " + Environment.NewLine + url;
-                }
-                store.AppendValues(i3, new object [] {s, v});
-        
-        }
-        string escapeString(string s){
-                    string news = s.Replace("‘", "&apos;");
-                    news = news.Replace("\"", "&quot;");
-                    news = news.Replace(">", "&gt;");
-                    news = news.Replace("<", "&lt;");
-                    return news;        
-        }
-        void addDetails(Violation v, TreeIter i){
-                if(v.Messages != null && v.Messages.Count > 0) {
-                    string s = Mono.Unix.Catalog.GetString("Details");
-                    TreeIter i3 = store.AppendValues(i, new object [] {s, v});
-                    s = String.Empty;
-                    foreach (Message message in v.Messages) {
-                        s += message + Environment.NewLine;
-                    }
-                    store.AppendValues(i3, new object [] {escapeString(s), v});
-                }
-        }
-        
+
+        List<GendarmeAddin.INodeAppendable > searchResult = new List<GendarmeAddin.INodeAppendable > ();
+
         void fillViolationsWithoutGrouping() {
             foreach(Violation v in runner.Violations) {
-                RuleInformation ri = RuleInformationManager.GetRuleInformation (v.Rule);
-                TreeIter i = store.AppendValues(new object [] {ri.Name, v});
-                string s =  Mono.Unix.Catalog.GetString("Problem");
-                TreeIter i2 = store.AppendValues(i, new object [] {s, v});
-                s = String.Format (ri.Problem, v.Violator);
-                store.AppendValues(i2, new object [] {escapeString(s), v});
-                addDetails(v, i2);
-                addSolution(ri, v, i); 
+                     lock (searchResult) {
+                                searchResult.Add (new GendarmeAddin.ProblemTreeNode(v));
+                                if (searchResult.Count == 1)
+                                        GLib.Idle.Add (AddItemGui);
+                     }        
             }
         }
+    
+         bool AddItemGui ()
+           {
+              lock (searchResult) {
+                      int max = Math.Min (50, searchResult.Count);
+                      for (int n=0; n<max; n++) {
+                              searchResult[n].Append(store);
+                      }
+                      searchResult.RemoveRange (0, max);
+                      return searchResult.Count > 0;
+              }
+           }
 
         void fillViolationsWithReasonGrouping() {
             Dictionary<RuleInformation, List<Violation>> vList = new Dictionary<RuleInformation, List<Violation>>();
@@ -118,13 +99,11 @@ public partial class GendarmeDisplay : Gtk.Bin {
                 vList[ri].Add(v);
             }
             foreach(RuleInformation ri in vList.Keys) {
-                TreeIter i = store.AppendValues(new object [] {ri.Name + " ( " + vList[ri].Count + " )" , null});
-                foreach(Violation v in vList[ri]) {
-                    string s = String.Format (ri.Problem, v.Violator);
-                    TreeIter i2 = store.AppendValues(i, new object [] {escapeString(s), v});
-                    addDetails(v, i2);
-                    addSolution(ri, v, i2); 
-                }
+                     lock (searchResult) {
+                                searchResult.Add (new GendarmeAddin.ReasonTreeNode(ri, vList[ri]));
+                                if (searchResult.Count == 1)
+                                        GLib.Idle.Add (AddItemGui);
+                     }        
             }
         }
 
@@ -145,17 +124,12 @@ public partial class GendarmeDisplay : Gtk.Bin {
             }
 
             foreach(DotNetProject project in vList.Keys) {
-                TreeIter ir = store.AppendValues(new object [] { project.Name + " ( " + vList[project].Count + " )" , null });
-                foreach(Violation v in vList[project]) {
-                    RuleInformation ri = RuleInformationManager.GetRuleInformation (v.Rule);
-                    TreeIter i = store.AppendValues(ir, new object [] {ri.Name, v});
-                    string s =  Mono.Unix.Catalog.GetString("Problem");
-                    TreeIter i2 = store.AppendValues(i, new object [] {s, v});
-                    s = String.Format (ri.Problem, v.Violator);
-                    store.AppendValues(i2, new object [] {escapeString(s), v});
-                    addDetails(v, i2);
-                    addSolution(ri, v, i); 
-                }
+                     lock (searchResult) {
+                                searchResult.Add (new GendarmeAddin.SolutionTreeNode(project, vList[project]));
+                                if (searchResult.Count == 1)
+                                        GLib.Idle.Add (AddItemGui);
+                     }        
+
             }
         }
 
@@ -178,18 +152,12 @@ public partial class GendarmeDisplay : Gtk.Bin {
                 }
                 vList[prj][ri].Add(v);
             }
-
             foreach(DotNetProject project in vList.Keys) {
-                TreeIter ir = store.AppendValues(new object [] { project.Name + " ( " + vList[project].Count + " )" , null });
-                foreach(RuleInformation ri in vList[project].Keys){
-                    TreeIter i = store.AppendValues(ir, new object [] {ri.Name + " ( " + vList[project][ri].Count + " )" , null});
-                    foreach(Violation v in vList[project][ri]) {
-                        string s = String.Format (ri.Problem, v.Violator);
-                        TreeIter i2 = store.AppendValues(i, new object [] {escapeString(s), v});
-                        addDetails(v, i2);
-                        addSolution(ri, v, i2); 
-                    }
-                }
+                     lock (searchResult) {
+                                searchResult.Add (new GendarmeAddin.SolutionReasonTreeNode(project, vList[project]));
+                                if (searchResult.Count == 1)
+                                        GLib.Idle.Add (AddItemGui);
+                     }        
             }
         }
 
@@ -253,10 +221,6 @@ public partial class GendarmeDisplay : Gtk.Bin {
         }
 
         void fillViolations(MonoDevelop.GendarmeGroupingType mode) {
-           MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new StatefulMessageHandler (delegate {
-                vView.Model = null;
-              }
-           ), null);
 
             switch(mode) {
             case MonoDevelop.GendarmeGroupingType.None:
@@ -272,10 +236,6 @@ public partial class GendarmeDisplay : Gtk.Bin {
                 fillViolationsWithReasonGrouping();
                 break;
             }
-           MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new StatefulMessageHandler (delegate {
-                vView.Model = store; 
-              }
-           ), null);
         }
         
         
@@ -287,14 +247,16 @@ public partial class GendarmeDisplay : Gtk.Bin {
             thread.Start(item);            
         }
         
+          
         private void SetProgress(double number)
-       { 
-           MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new StatefulMessageHandler (delegate {
-                 progressbar.Fraction = number;
-                 updateCounters();
-              }
-           ), null);
-       }
+           { 
+               MonoDevelop.Core.Gui.Services.DispatchService.GuiDispatch (new StatefulMessageHandler (delegate {
+                     progressbar.Fraction = number;
+                     updateCounters();
+                  }
+               ), null);
+           }
+           
         public void OnProgressChanged(int progress){
             double addp = (double)progress / progress_step;
             double savep = previous_progress; 
@@ -454,6 +416,36 @@ public partial class GendarmeDisplay : Gtk.Bin {
                     }
                 }
             }
+        }
+        [GLib.ConnectBefore]
+        protected virtual void OnVViewRowExpanded (object o, Gtk.RowExpandedArgs args)
+        {
+          object ob = store.GetValue(args.Iter,2);
+          if (ob!=null && ob is GendarmeAddin.INodeAppendable){
+            GendarmeAddin.INodeAppendable node = (GendarmeAddin.INodeAppendable)ob;
+            node.AppendExpanded(store);
+          }
+        }
+        [GLib.ConnectBefore]
+        protected virtual void OnVViewRowActivated (object o, Gtk.RowActivatedArgs args)
+        {
+                Gtk.TreeModel model;
+                Gtk.TreeIter iter;
+                Gtk.TreePath path = args.Path;
+
+                vView.Selection.GetSelected (out model, out iter);
+                object ob = store.GetValue(iter,2);
+                if (ob!=null && ob is GendarmeAddin.INodeAppendable){
+                GendarmeAddin.INodeAppendable node = ob as GendarmeAddin.INodeAppendable;
+                node.AppendExpanded(store);
+                    if (!vView.GetRowExpanded (path)) {
+                            vView.ExpandRow (path, false);
+                    } else {
+                            vView.CollapseRow (path);
+                    }      
+                    args.RetVal = true;
+                }
+                args.RetVal = false;
         }
 
                                 
