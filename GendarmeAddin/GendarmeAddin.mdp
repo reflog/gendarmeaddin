@@ -29,6 +29,7 @@
     <File name="./gtk-gui/MonoDevelop.GendarmeDisplay.cs" subtype="Code" buildaction="Compile" />
     <File name="./GendarmeRunner.cs" subtype="Code" buildaction="Compile" />
     <File name="./lib/Mono.Cecil.dll" subtype="Code" buildaction="Nothing" />
+    <File name="./ProblemTreeNode.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />

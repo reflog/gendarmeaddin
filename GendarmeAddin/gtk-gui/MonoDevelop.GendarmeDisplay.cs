@@ -148,6 +148,8 @@ namespace MonoDevelop {
             }
             this.Show();
             this.vView.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnVViewButtonPressEvent);
+            this.vView.RowExpanded += new Gtk.RowExpandedHandler(this.OnVViewRowExpanded);
+            this.vView.RowActivated += new Gtk.RowActivatedHandler(this.OnVViewRowActivated);
         }
     }
 }
